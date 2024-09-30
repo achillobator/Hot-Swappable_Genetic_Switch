@@ -175,62 +175,7 @@ ggsave("plot_LRD_time.pdf", plot = last_plot())
 
 
 
-### old code past here
-B_hyg <- c("Hyg",NA)
-dat_B <- subset(dat4t1, Selection %in% B_hyg)
-dat_B <- subset(dat, dpg ==  14)
-dat_B <- subset(dat_B, TPL_type !=  "1xHA-TPLN188-IAA14")
-dat_B <- subset(dat_B, genotype !=  "5095-1")
-dat_B <- subset(dat_B, genotype !=  "5097-10")
-dat_B <- subset(dat_B, genotype !=  "5097-2")
-dat_B <- subset(dat_B, genotype !=  "5097-4")
-dat_B <- subset(dat_B, genotype !=  "5099-3")
-dat_B <- subset(dat_B, genotype !=  "5099-5")
-dat_B <- subset(dat_B, genotype !=  "5099-6")
-dat_B$genotype <- factor(dat_B$genotype, levels=c("Col-0","5057","299","409","406","414","411","408","407","slr"),ordered=TRUE)
 
-plot3 <- ggplot(dat_B, aes(as.factor(TPL_type), y = LRD, color=as.factor(genotype), show.legend = FALSE)) + 
-  geom_boxplot(lwd=0.5, outlier.size = 0) +
-  geom_jitter(size =.2, width = 0.2) +
-  scale_y_continuous(limits=c(0,0.6)) +
-  ylab('LRD') +
-  xlab('Genotype') +
-  theme(plot.title = element_text(hjust = 0.5), plot.subtitle = element_text(hjust = 0.5), strip.background  = element_blank()) +
-  theme_classic(base_family = 'Arial Bold', base_size = 10)+
-  scale_color_viridis(discrete = TRUE, option = "D")
-plot3+theme(axis.text.x = element_text(angle = 90, hjust = 1)) + theme(legend.position="none")
-
-dat4 <- subset(dat4t1, Selection != "KanHyg" )
-dat5 <- subset(dat4, dpg == 14)
-dat5$genotype <- factor(dat5$genotype, levels=c("Col-0","5057","299","298","288","287","286","296","285","284","252","295","311","312","365","366","slr"),ordered=TRUE)
-dat7 <- subset(dat5, rl > 5)
-dat8 <- subset(dat5, rl > 25)
-
-plot4<- ggplot(dat8, aes(as.factor(TPL_type), y = LRD, color=as.factor(TPL_type))) + 
-  geom_boxplot(outlier.shape = NA) +
-  geom_jitter(size=.5, width=.15, color="black", alpha=0.5) +
-  #ylim(c(0,0.7)) +
-  ylab('LRD') +
-  theme(plot.title = element_text(hjust = 0.5), plot.subtitle = element_text(hjust = 0.5), strip.background  = element_blank()) +
-  theme_classic(base_family = 'Arial Bold', base_size = 10)  
-plot4+theme(axis.text.x = element_text(angle = 90, hjust = 1)) + theme(legend.position="none")
-
-B_line <- c("312","295","298","299","Col-0","slr","5057","252","365","366")
-dat_V <- subset(dat7, genotype %in% B_line)
-dat_V$genotype <- factor(dat_V$genotype, levels=c("Col-0","5057","298","299","252","295","312","365","366","slr"),ordered=TRUE)
-
-plot3<- ggplot(dat_V, aes(as.factor(genotype), y = LRD, color =as.factor(genotype))) +   
-  geom_boxplot(outlier.shape = NA, lwd=0.6) +
-  geom_jitter(size=.5, width=.2, color="black", alpha=0.6) +
-  ylab('LRD') +
-  theme(plot.title = element_text(hjust = 0.5), plot.subtitle = element_text(hjust = 0.5), strip.background  = element_blank()) +
-  theme_classic(base_family = 'Arial Bold', base_size = 10)+
-  scale_color_brewer(palette = "Paired")
-  #scale_color_manual(values = A_colors)
-plot3
-
-A_colors <- c("#FFCC00", "#000000", "#33FF00", "#2570e8","#FF9900","#CC9900","#0033CC","#0099FF","#006600","#000000")
- ##########
 dat7 <- dat_V
 
 #Run ANNOVA
@@ -330,16 +275,3 @@ dat_C<- group_by(dat, TPL_type, dpg) %>%
     count = n()
   )
 
-dat_D<- left_join(dat_C, dat_B)
-C_lines <- c("Col-0","5057","299","298","288","287","286","296","285","284","252","295","311","312","365","366","slr")
-dat_E <- subset(dat_D, genotype %in% C_lines)
-dat_E$genotype <- factor(dat_E$genotype, levels=c("Col-0","5057","299","298","288","287","286","296","285","284","252","295","311","312","365","366","slr"),ordered=TRUE)
-dat_E <- subset(dat_E, rl > 5)
-dat8 <- subset(dat5, rl > 25)
-
-B_line <- c("312","295","298","299","Col-0","slr","5057","252","365","366")
-dat_F <- subset(dat_E, genotype %in% B_line)
-dat_F$genotype <- factor(dat_F$genotype, levels=c("Col-0","5057","298","299","252","295","312","365","366","slr"),ordered=TRUE)
-
-#plotN188+ geom_vline(xintercept = 47, color = "blue", size= 1.25, alpha = 0.5)
-#plotN188+ facet_wrap(~Rapa, ncol = 2)+ geom_vline(xintercept = 47, color = "blue", size= 1.25, alpha = 0.5)
