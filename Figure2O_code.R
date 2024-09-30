@@ -68,23 +68,13 @@ plot1_pheno<- ggplot(dat_pheno, aes(x= genotype, y = LRD)) +
 plot1_pheno
 
 
-#B_hyg <- c("Hyg",NA)
-#dat_B <- subset(dat4t1, Selection %in% B_hyg)
+
 dat_B <- subset(dat, Day ==  10)
 dat_C <- subset(dat, days ==  11)
 dat_D <- subset(dat, days ==  12)
 dat_13 <- subset(dat, days ==  13)
 dat_14 <- subset(dat, days ==  14)
-#dat_B <- subset(dat_B, genotype !=  "5095-1")
-#dat_B <- subset(dat_B, genotype !=  "5097-10")
-#dat_B <- subset(dat_B, genotype !=  "5097-2")
-#dat_B <- subset(dat_B, genotype !=  "5097-4")
-#dat_B <- subset(dat_B, genotype !=  "5099-3")
-#dat_B <- subset(dat_B, genotype !=  "5099-5")
-#dat_B <- subset(dat_B, genotype !=  "5099-6")
-#dat_B$genotype <- factor(dat_B$genotype, levels=c("Col-0","5057","299","409","406","414","411"#,"408","407","slr"),ordered=TRUE)
-#dat_C$genotype <- factor(dat_C$genotype, levels=c("Col-0","5057","299","409","406","414","411"#,"408","407","slr"),ordered=TRUE)
-#dat_D$genotype <- factor(dat_D$genotype, levels=c("Col-0","5057","299","409","406","414","411","408","407","slr"),ordered=TRUE)
+
 
 plot3 <- ggplot(dat_D, aes(x = as.factor(construct), y = LRD, color=as.factor(construct), show.legend = FALSE)) + 
   geom_boxplot(lwd=0.6, outlier.size = 0) +
@@ -99,9 +89,8 @@ plot3 <- ggplot(dat_D, aes(x = as.factor(construct), y = LRD, color=as.factor(co
 plot3
 plot3 + facet_wrap(~days)
 
-#dat4 <- subset(dat4t1, Selection != "KanHyg" )
+
 dat5 <- subset(dat, days == 14)
-#dat5$genotype <- factor(dat5$genotype, levels=c("Col-0","5057","299","298","288","287","286","296","285","284","252","295","311","312","365","366","slr"),ordered=TRUE)
 dat7 <- subset(dat5, length_mm > 5)
 dat8 <- subset(dat5, length_mm > 25)
 dat8 <- subset(dat8, comment !=  "fungus")
@@ -121,26 +110,7 @@ plot4<- ggplot(dat_x, aes(x= construct, y = LRD, color=construct)) +
 plot4
 plot4 + coord_flip()
 
-B_line <- c("5057","IAA14","TPLN188","slr","TPLN188-IAA14","TPLN188[H1SolvMuts]","TPLN188[H1LisHMuts]","TPLN188[H1->TAF5H1]","TPLN188[H1->ahelix]","TPLN188[[V145AE146AK148AK149A]]-IAA14","TPLN188[H1SolvMuts]-[V145AE146AK148AK149A]", "TPLN188[H1LisHMuts]-[V145AE146AK148AK149A]","TPLN188[H1->TAF5H1]-[V145AE146AK148AK149A]","TPLN188[H1->ahelix]-[V145AE146AK148AK149A]")
-dat_V <- subset(dat8, construct %in% B_line)
-dat_V$construct <- factor(dat_V$construct, levels=c("5057","IAA14","TPLN188","slr","TPLN188-IAA14","TPLN188[[V145AE146AK148AK149A]]-IAA14","TPLN188[H1SolvMuts]","TPLN188[H1SolvMuts]-[V145AE146AK148AK149A]","TPLN188[H1LisHMuts]","TPLN188[H1LisHMuts]-[V145AE146AK148AK149A]","TPLN188[H1->TAF5H1]","TPLN188[H1->TAF5H1]-[V145AE146AK148AK149A]","TPLN188[H1->ahelix]","TPLN188[H1->ahelix]-[V145AE146AK148AK149A]"),ordered=TRUE)
-write.csv(dat_V,file="dat_V.csv")
-dat_V <-read.csv("dat_V.csv")
-
-plot3<- ggplot(dat_V, aes(as.factor(construct), y = LRD, color =as.factor(construct))) +   
-  geom_boxplot(outlier.shape = NA, lwd=.65, alpha=0.1) +
-  geom_jitter(size=.75, width=.2, color="black", alpha=0.5) +
-  #ylim(c(0,0.5)) +
-  ylab('LRD') +
-  theme(plot.title = element_text(hjust = 0.5), plot.subtitle = element_text(hjust = 0.5), strip.background  = element_blank()) +
-  theme_classic(base_size = 10)+
-  theme(legend.position="none")+
-  scale_colour_manual(values = A_colors)+
-  theme(axis.text.x = element_text(angle = 90, hjust = 1))
-plot3
-
-A_colors <- c("#424242","#424242","#424242","#424242","#FFCC00", "#FF9900", "#fa9fb5", "#c51b8a","#0099FF","#0033CC","#a1d99b","#31a354","#bdbdbd","#636363")
- ##########
+##########
 dat2 <- dat_pheno
 dat2 <- subset(dat2, Day == 14)
 dat_7 <- subset(dat2, comment !=  "fungus")
@@ -284,68 +254,3 @@ CLD = cld(marginal, alpha = 0.05, Letters = letters, adjust  = "tukey")
 CLD
 
 
-##________
-#mapping by time
-
-
-plot_time <- ggplot(data = dat_E, mapping = aes(x = days, y = mean, color=as.factor(construct))) +
-  geom_point(size=.5) + 
-  geom_line() + 
-  ylab("Mean LRD") + 
-  xlab("Time (Days)") + 
-  labs(color = "Genotype", title = "LRD TC") + 
-  theme_classic(base_family = 'Arial Bold', base_size = 12) +
-  geom_errorbar(aes(ymin=mean-(sd/sqrt(count)), ymax=mean+(sd/sqrt(count))), size = 0.2, width = 0.1) + 
-  theme(legend.position="none")+
-  #scale_color_brewer(palette = "Spectral") + 
-  theme(plot.title = element_text(hjust = 0.5), plot.subtitle = element_text(hjust = 0.5), strip.background  = element_blank()) 
-plot_time
-plot_time+facet_wrap(~construct, nrow = 5)
-
-summary(dat$LRD)
-library(dplyr)
-dat_E<- group_by(datb, construct, days) %>% 
-  summarise(
-    count = n(), 
-    mean = mean(LRD, na.rm = TRUE),
-    sd = sd(LRD, na.rm = TRUE),
-    ymin = (mean-sd),
-    ymax = (mean+sd),
-    count = n()
-  )
-
-datb <- subset(dat, length_mm > 25)
-
-
-#dat_D<- left_join(dat_C, dat_B)
-#C_lines <- c("Col-0","5057","299","298","288","287","286","296","285","284","252","295","311"#,"312","365","366","slr")
-#dat_E <- subset(dat_D, genotype %in% C_lines)
-#dat_E$genotype <- factor(dat_E$genotype, levels=c("Col-0","5057","299","298","288","287","286"#,"296","285","284","252","295","311","312","365","366","slr"),ordered=TRUE)
-#dat_E <- subset(dat_E, rl > 5)
-#dat8 <- subset(dat5, rl > 25)
-#
-#B_line <- c("312","295","298","299","Col-0","slr","5057","252","365","366")
-#dat_F <- subset(dat_E, genotype %in% B_line)
-#dat_F$genotype <- factor(dat_F$genotype, levels=c("Col-0","5057","298","299","252","295","312"#,"365","366","slr"),ordered=TRUE)
-
-#plotN188+ geom_vline(xintercept = 47, color = "blue", size= 1.25, alpha = 0.5)
-#plotN188+ facet_wrap(~Rapa, ncol = 2)+ geom_vline(xintercept = 47, color = "blue", size= 1.25, alpha = 0.5)
-
-
-###
-##helixvistest
-print(sequence[1, ])
-data(H1_Seq)
-draw_wheel("LSRELVFLILQFLDE")
-
-draw_wheel("LSRELVFLILQFLDE", col = c("pink", "orange", "white", "black"),
-           labels = TRUE, label.col = "blue")
-draw_wheel("LSRELVFLILQFLDE",
-           labels = TRUE, label.col = "black")
-
-###
-if (!require("BiocManager", quietly = TRUE))
-  install.packages("BiocManager")
-
-BiocManager::install("flowTime")
-library(flowTime)
